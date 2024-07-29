@@ -1,0 +1,13 @@
+# API keys and secrete
+.env
+
+# Dependency directory
+node_modules
+
+# Ignore built ts files
+dist/**/*
+
+# Ignore package-lock.json
+package-lock.json
+
+.vscode/
