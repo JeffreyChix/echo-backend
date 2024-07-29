@@ -13,7 +13,7 @@ const app: Application = express();
 app.use(helmet());
 
 if (NODE_ENV === "development") {
-  app.use(morgan("dev"));
+    app.use(morgan("dev"));
 }
 
 app.use(cors(corsOptions));

@@ -1,15 +1,10 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 
 import { API_BASE_PATH } from "../lib/constants";
+import { mainRoutes } from "./main";
 
 const appRoutes = Router();
 
-appRoutes.get(API_BASE_PATH, (_: Request, res: Response) => {
-  res.json({
-    name: "Echo Backend",
-    status: "Running...",
-    author: "Jeffrey Nwankwo",
-  });
-});
+appRoutes.use(API_BASE_PATH, mainRoutes);
 
 export { appRoutes };
