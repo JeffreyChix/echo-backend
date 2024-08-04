@@ -8,9 +8,36 @@ const reportRoutes = Router();
 
 reportRoutes.post(
     "/new",
-    fileUpload.array("supportingDocuments"),
+    fileUpload.array("attachments"),
     schemaValidator("/report/new"),
     reportController.newReport,
+);
+
+reportRoutes.get("/all", reportController.getReports);
+
+reportRoutes.get("/:secretKey", reportController.getReport);
+
+reportRoutes.get("/total", reportController.getReportCount);
+
+reportRoutes.post(
+    "/update/new",
+    schemaValidator("/report/update/new"),
+    reportController.newReportUpdate,
+);
+
+reportRoutes.get(
+    "/update/single/:reportUpdateKey",
+    reportController.getReportUpdate,
+);
+
+reportRoutes.get(
+    "/update/all/:reportSecretKey",
+    reportController.getReportUpdates,
+);
+
+reportRoutes.get(
+    "/update/total/:reportSecretKey",
+    reportController.getReportUpdateCount,
 );
 
 export { reportRoutes };
