@@ -2,6 +2,9 @@
   "name": "echo-backend",
   "version": "1.0.0",
   "main": "dist/bin/www/server.js",
+  "engines": {
+    "node": "20.16.0"
+  },
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
