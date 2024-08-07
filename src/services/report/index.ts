@@ -180,6 +180,14 @@ const reportService = {
         return reportCount;
     },
 
+    async getAllReportKeys() {
+        const reportKeys = await sorobanServices.contractInterface(
+            "get_all_report_keys",
+        );
+
+        return reportKeys;
+    },
+
     async newReportUpdate(payload: ReportUpdatePayload) {
         const { reportSecretKey, content, status } = payload;
 

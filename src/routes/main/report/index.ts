@@ -15,9 +15,11 @@ reportRoutes.post(
 
 reportRoutes.get("/all", reportController.getReports);
 
-reportRoutes.get("/:secretKey", reportController.getReport);
-
 reportRoutes.get("/total", reportController.getReportCount);
+
+reportRoutes.get("/all-keys", reportController.getAllReportKeys);
+
+reportRoutes.get("/:secretKey", reportController.getReport);
 
 reportRoutes.post(
     "/update/new",

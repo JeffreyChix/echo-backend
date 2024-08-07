@@ -69,6 +69,22 @@ const reportController: Record<ReportServiceMethods, RequestHandler> =
             }
         },
 
+        async getAllReportKeys(req: Request, res: Response) {
+            try {
+                const reportKeys =
+                    await reportService.getAllReportKeys();
+
+                return sendResponse(
+                    res,
+                    200,
+                    "Report keys retrieved!",
+                    reportKeys,
+                );
+            } catch (err) {
+                return sendErrorResponse(res, err);
+            }
+        },
+
         async newReportUpdate(req: Request, res: Response) {
             try {
                 const update = await reportService.newReportUpdate(

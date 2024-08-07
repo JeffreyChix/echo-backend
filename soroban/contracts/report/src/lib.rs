@@ -1,7 +1,8 @@
 #![no_std]
 
 use soroban_sdk::{
-    contract, contractimpl, contracttype, symbol_short, Env, Map, String, Symbol, Vec, Address, BytesN
+    contract, contractimpl, contracttype, symbol_short, Address, BytesN, Env, Map, String, Symbol,
+    Vec,
 };
 
 #[contracttype]
@@ -32,7 +33,7 @@ pub struct UpdateCount {
 
 #[contracttype]
 pub enum UpdateCountRegistry {
-    pub UpdateCount(Symbol),
+    UpdateCount(Symbol),
 }
 
 #[contracttype]
@@ -50,7 +51,6 @@ pub struct ReportContract;
 
 #[contractimpl]
 impl ReportContract {
-
     // Upload report
     pub fn upload_report(
         env: Env,
@@ -58,13 +58,12 @@ impl ReportContract {
         subject: String,
         date_of_incident: String,
         location: String,
-        date_of_submission:String,
+        date_of_submission: String,
         description_cid: String,
         attachments_cid: String,
         attachment_count: u32,
-        initial_update_key: String
+        initial_update_key: String,
     ) {
-        
         let report = Report {
             subject,
             date_of_incident,
@@ -72,7 +71,7 @@ impl ReportContract {
             description_cid,
             attachments_cid,
             date_of_submission: date_of_submission.clone(),
-            attachment_count
+            attachment_count,
         };
 
         let mut report_count: u64 = env.storage().persistent().get(&REPORT_COUNT).unwrap_or(0);
@@ -93,7 +92,14 @@ impl ReportContract {
         env.storage().persistent().set(&REPORT_COUNT, &report_count);
 
         // upload a default report update with status 'submitted'
-        Self::upload_report_update(env.clone(), secret_key, initial_update_key, String::from_str(&env, "__NULL__"), String::from_str(&env, "submitted"), date_of_submission);
+        Self::upload_report_update(
+            env.clone(),
+            secret_key,
+            initial_update_key,
+            String::from_str(&env, "__NULL__"),
+            String::from_str(&env, "submitted"),
+            date_of_submission,
+        );
     }
 
     // Fetch a report
@@ -119,8 +125,15 @@ impl ReportContract {
         reports
     }
 
-    pub fn get_report_count (env: Env) -> u64 {
+    pub fn get_report_count(env: Env) -> u64 {
         env.storage().persistent().get(&REPORT_COUNT).unwrap_or(0)
+    }
+
+    pub fn get_all_report_keys(env: Env) -> Vec<Symbol> {
+        env.storage()
+            .persistent()
+            .get(&REPORT_KEYS)
+            .unwrap_or(Vec::new(&env))
     }
 
     // Upload a report update
@@ -132,7 +145,8 @@ impl ReportContract {
         status: String,
         date_of_submission: String,
     ) {
-        let mut update_count = Self::get_report_update_count(env.clone(), report_secret_key.clone());
+        let mut update_count =
+            Self::get_report_update_count(env.clone(), report_secret_key.clone());
 
         let report_update = ReportUpdate {
             report_secret_key: report_secret_key.clone(),
@@ -145,10 +159,17 @@ impl ReportContract {
 
         update_count.count = update_count.count + 1;
 
-        env.storage().persistent().set(&UpdateCountRegistry::UpdateCount(report_secret_key), &update_count);
+        env.storage().persistent().set(
+            &UpdateCountRegistry::UpdateCount(report_secret_key),
+            &update_count,
+        );
 
         // Save the update key to the report update keys list
-        let mut update_keys: Vec<String> = env.storage().persistent().get(&UPDATE_KEYS).unwrap_or(Vec::new(&env));
+        let mut update_keys: Vec<String> = env
+            .storage()
+            .persistent()
+            .get(&UPDATE_KEYS)
+            .unwrap_or(Vec::new(&env));
         update_keys.push_back(update_key);
         env.storage().persistent().set(&UPDATE_KEYS, &update_keys);
     }
@@ -177,17 +198,18 @@ impl ReportContract {
     }
 
     // Get report update count
-    pub fn get_report_update_count (env: Env, report_secret_key: Symbol) -> UpdateCount {
+    pub fn get_report_update_count(env: Env, report_secret_key: Symbol) -> UpdateCount {
         let key = UpdateCountRegistry::UpdateCount(report_secret_key);
-        env.storage().persistent().get(&key).unwrap_or(UpdateCount {
-            count: 0
-        })
+        env.storage()
+            .persistent()
+            .get(&key)
+            .unwrap_or(UpdateCount { count: 0 })
     }
-    
+
     // -------------------CONTRACT UPGRADE------------------------ //
 
     // From::=> https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts
-    
+
     pub fn init(e: Env, admin: Address) {
         e.storage().instance().set(&DataKey::Admin, &admin);
     }

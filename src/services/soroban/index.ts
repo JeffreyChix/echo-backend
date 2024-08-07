@@ -8,6 +8,7 @@ import path from "path";
 import {
     ADMIN_SECRET_KEY,
     CONTRACT_ADDRESS,
+    NODE_ENV,
     PUBLIC_KEY,
 } from "../../lib/constants";
 import { convertToScVal } from "../../helpers/convertToScVal";
@@ -16,6 +17,7 @@ type SmartContractFunctionNames =
     | "upload_report"
     | "fetch_report"
     | "fetch_all_reports"
+    | "get_all_report_keys"
     | "upload_report_update"
     | "fetch_report_update"
     | "fetch_all_report_updates"
@@ -138,6 +140,8 @@ const sorobanServices = {
     async upgradeContract() {
         // first build the contract
         // Run `stellar contract build` to get a new wasm file
+
+        if (NODE_ENV !== "development") return;
 
         await this.contractInterface("init", [
             new StellarSDK.Address(PUBLIC_KEY).toScVal(),
