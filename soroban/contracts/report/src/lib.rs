@@ -215,7 +215,7 @@ impl ReportContract {
     }
 
     pub fn version() -> u32 {
-        2
+        1
     }
 
     pub fn upgrade(e: Env, new_wasm_hash: BytesN<32>) {

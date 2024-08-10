@@ -172,6 +172,24 @@ const reportService = {
         return decodedReports;
     },
 
+    async getReportsInfo() {
+        const reports = await this.getReports();
+
+        return reports.map(
+            ({
+                subject,
+                secretKey,
+                date_of_submission,
+                attachments,
+            }) => ({
+                subject,
+                secretKey,
+                date_of_submission,
+                attachmentLength: attachments?.length,
+            }),
+        );
+    },
+
     async getReportCount() {
         const reportCount = (await sorobanServices.contractInterface(
             "get_report_count",

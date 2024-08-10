@@ -15,6 +15,8 @@ reportRoutes.post(
 
 reportRoutes.get("/all", reportController.getReports);
 
+reportRoutes.get("/info", reportController.getReportsInfo);
+
 reportRoutes.get("/total", reportController.getReportCount);
 
 reportRoutes.get("/all-keys", reportController.getAllReportKeys);

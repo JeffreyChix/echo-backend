@@ -38,7 +38,7 @@ const reportController: Record<ReportServiceMethods, RequestHandler> =
             }
         },
 
-        async getReports(req: Request, res: Response) {
+        async getReports(_: Request, res: Response) {
             try {
                 const reports = await reportService.getReports();
 
@@ -53,7 +53,21 @@ const reportController: Record<ReportServiceMethods, RequestHandler> =
             }
         },
 
-        async getReportCount(req: Request, res: Response) {
+        async getReportsInfo(_: Request, res: Response) {
+            try {
+                const info = await reportService.getReportsInfo();
+                return sendResponse(
+                    res,
+                    200,
+                    "Reports info retrieved!",
+                    info,
+                );
+            } catch (err) {
+                return sendErrorResponse(res, err);
+            }
+        },
+
+        async getReportCount(_: Request, res: Response) {
             try {
                 const reportCount =
                     await reportService.getReportCount();
@@ -69,7 +83,7 @@ const reportController: Record<ReportServiceMethods, RequestHandler> =
             }
         },
 
-        async getAllReportKeys(req: Request, res: Response) {
+        async getAllReportKeys(_: Request, res: Response) {
             try {
                 const reportKeys =
                     await reportService.getAllReportKeys();
