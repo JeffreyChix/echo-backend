@@ -25,9 +25,9 @@ app.use(express.urlencoded({ extended: true }));
 (async function initApp() {
     getClient().then(() => console.log("Client initialized ✔✔✔"));
 
-    // Only call for upgrades
-    // const result = await sorobanServices.upgradeContract();
-    // console.log("Upgrade result => ", result);
+    // Uncomment this to deploy contract
+    // const response = await sorobanServices.uploadWasm();
+    // await sorobanServices.deployContract(response);
 })();
 
 app.use(appRoutes);
