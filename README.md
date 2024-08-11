@@ -195,6 +195,8 @@ Your Node server is now running, and you can start making API requests.
 
 > If you've cloned the Next.js frontend of this project, add the localhost URL, e.g., `http://localhost:3000`, to the `allowedOrigins` array in `src/lib/config.ts`.
 
+Check out the frontend repo [here](https://github.com/JeffreyChix/echo-frontend.git).
+
 Happy coding!
 
 
